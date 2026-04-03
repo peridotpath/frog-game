@@ -8,6 +8,10 @@
 [ext_resource type="Script" uid="uid://y4lint7upc5f" path="res://free_look_camera.gd" id="5_e2fnq"]
 [ext_resource type="Texture2D" uid="uid://bq0w2g0pyfms4" path="res://assets/target.png" id="6_e2fnq"]
 [ext_resource type="Script" uid="uid://bvp2ebnna5oc6" path="res://terrain_cursor.gd" id="8_e2fnq"]
+[ext_resource type="Texture2D" uid="uid://dq64nlj6fyi3j" path="res://assets/terrain_gaus_icon.png" id="9_ifbpd"]
+[ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="10_dnihh"]
+[ext_resource type="Texture2D" uid="uid://duf4bkba71eyu" path="res://assets/terrain_cyl_icon.png" id="11_e65o5"]
+[ext_resource type="PackedScene" uid="uid://cjs3hr4mxyqbr" path="res://assets/models/frog_model.glb" id="12_8cu4w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
 render_priority = 0
@@ -35,6 +39,15 @@ shader_parameter/fade_power = 1.0
 material = SubResource("ShaderMaterial_dnihh")
 size = Vector3(2, 2, 2)
 
+[sub_resource type="LabelSettings" id="LabelSettings_dnihh"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_j6wux"]
+font_size = 22
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ykog"]
+size = Vector3(4.1312866, 0.43762207, 3.3197021)
+
 [node name="MapEditor" type="Node3D" unique_id=205229475]
 
 [node name="GameLight" type="DirectionalLight3D" parent="." unique_id=909131117]
@@ -49,10 +62,78 @@ transform = Transform3D(0.9983102, -0.05649288, 0.013609998, -0.010952108, 0.047
 script = ExtResource("5_e2fnq")
 
 [node name="Decal" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171]
-transform = Transform3D(1, 0, 0, 0, 0.20247962, -0.9792865, 0, 0.9792865, 0.20247962, 0, -0.74996614, -3.6271887)
+transform = Transform3D(1, 0, 3.7252903e-09, 0, 0.20247963, -0.97928655, 6.9849193e-10, 0.9792865, 0.20247962, -0.00048715994, -0.7478714, -3.58276)
 cast_shadow = 0
 mesh = SubResource("BoxMesh_e65o5")
 script = ExtResource("8_e2fnq")
 texture = ExtResource("6_e2fnq")
 enable_fade = false
 metadata/_custom_type_script = "uid://feckn7f3pmud"
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1606261951]
+
+[node name="ColorRect" type="ColorRect" parent="UILayer" unique_id=1868512707]
+offset_right = 249.0
+offset_bottom = 647.0
+color = Color(0.2079221, 0.24501562, 0.17417488, 1)
+
+[node name="UIClose" type="TextureButton" parent="UILayer/ColorRect" unique_id=1674367031]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 51.0
+offset_bottom = 48.0
+texture_normal = ExtResource("10_dnihh")
+stretch_mode = 0
+
+[node name="GausButton" type="TextureButton" parent="UILayer/ColorRect" unique_id=449085232]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 70.0
+offset_right = 71.0
+offset_bottom = 134.0
+texture_normal = ExtResource("9_ifbpd")
+stretch_mode = 0
+
+[node name="CylButton" type="TextureButton" parent="UILayer/ColorRect" unique_id=771056574]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 70.0
+offset_right = 141.0
+offset_bottom = 134.0
+texture_normal = ExtResource("11_e65o5")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="UILayer/ColorRect" unique_id=521629018]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 4.0
+offset_right = 312.0
+offset_bottom = 53.0
+text = "MENU"
+label_settings = SubResource("LabelSettings_dnihh")
+
+[node name="ColorRect" type="ColorRect" parent="UILayer/ColorRect" unique_id=780029154]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 55.0
+offset_right = 237.0
+offset_bottom = 61.0
+
+[node name="Label2" type="Label" parent="UILayer/ColorRect" unique_id=455347042]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 211.0
+offset_right = 53.0
+offset_bottom = 234.0
+text = "GAUSSIAN BRUSH"
+label_settings = SubResource("LabelSettings_j6wux")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=695263020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.811056, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1059469548]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27020264)
+shape = SubResource("BoxShape3D_6ykog")
+
+[node name="frog_model" parent="RigidBody3D" unique_id=1446567459 instance=ExtResource("12_8cu4w")]
