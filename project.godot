@@ -15,6 +15,10 @@ run/main_scene="uid://dqhodvjmbqp0h"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/decal_compatibility/plugin.cfg")
@@ -25,6 +29,7 @@ enabled=PackedStringArray("res://addons/decal_compatibility/plugin.cfg")
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
