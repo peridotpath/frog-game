@@ -8,7 +8,7 @@
 [ext_resource type="Shader" uid="uid://foqf6idimvb0" path="res://addons/decal_compatibility/decal.gdshader" id="5_bnmdf"]
 [ext_resource type="Script" uid="uid://y4lint7upc5f" path="res://free_look_camera.gd" id="5_e2fnq"]
 [ext_resource type="Texture2D" uid="uid://bq0w2g0pyfms4" path="res://assets/target.png" id="6_e2fnq"]
-[ext_resource type="Script" uid="uid://bvp2ebnna5oc6" path="res://terrain_cursor.gd" id="8_e2fnq"]
+[ext_resource type="Script" uid="uid://feckn7f3pmud" path="res://addons/decal_compatibility/decal_compatibility.gd" id="9_86fvb"]
 [ext_resource type="Texture2D" uid="uid://dq64nlj6fyi3j" path="res://assets/terrain_gaus_icon.png" id="9_ifbpd"]
 [ext_resource type="Texture2D" uid="uid://c14ttk5krnhst" path="res://assets/ui_expand.png" id="10_86fvb"]
 [ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="10_dnihh"]
@@ -65,19 +65,20 @@ transform = Transform3D(0.81534797, -0.50983167, 0.27437094, -0.2581235, 0.10409
 material_override = SubResource("ShaderMaterial_bh6pa")
 script = ExtResource("1_vga7x")
 
-[node name="Camera3d" type="Camera3D" parent="." unique_id=799265956]
+[node name="Camera3d" type="Camera3D" parent="." unique_id=799265956 node_paths=PackedStringArray("terrain", "vertex_cubes")]
 transform = Transform3D(0.99999994, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.8081121, 0)
 script = ExtResource("5_e2fnq")
+terrain = NodePath("../Terrain")
+vertex_cubes = NodePath("../VertexCubes")
 
-[node name="TerrainCursor" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171 node_paths=PackedStringArray("terrain", "cubes")]
+[node name="TerrainCursor" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171]
 transform = Transform3D(1, 0, 0, 0, 0.20247962, -0.9792865, 0, 0.9792865, 0.20247962, 0, -0.74996614, -3.6271887)
 cast_shadow = 0
+gi_lightmap_scale = 0
 mesh = SubResource("BoxMesh_e65o5")
-script = ExtResource("8_e2fnq")
-terrain = NodePath("../../Terrain")
-cubes = NodePath("../../VertexCubes")
+Skeleton = null
+script = ExtResource("9_86fvb")
 texture = ExtResource("6_e2fnq")
-enable_fade = false
 metadata/_custom_type_script = "uid://feckn7f3pmud"
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=1606261951]
@@ -178,16 +179,17 @@ offset_bottom = 21.0
 text = "STR"
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=695263020]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 0.52712727, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 1.5116389, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1059469548]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27020264)
 shape = SubResource("BoxShape3D_6ykog")
 
 [node name="frog_model" parent="RigidBody3D" unique_id=1446567459 instance=ExtResource("12_8cu4w")]
+transform = Transform3D(-0.99994105, 0, -0.010855851, 0, 1, 0, 0.010855851, 0, -0.99994105, 0, 0, -1.3272349)
 
 [node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=360399718]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 0.52712727, -6.77082)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 1.3599172, -6.77082)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1356320380]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27020264)
