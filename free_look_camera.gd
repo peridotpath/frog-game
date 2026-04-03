@@ -10,6 +10,8 @@ extends Camera3D
 
 @onready var _velocity = default_velocity
 
+@export var TerrainCursor : DecalCompatibility
+
 @export var brush_strength : int = 50
 @export var terrain: MeshInstance3D
 @export var vertex_cubes: Node3D
@@ -60,7 +62,7 @@ func _process(delta):
 	var query = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
 	var result = space_state.intersect_ray(query)
 	if result:
-		$TerrainCursor.global_position = result.position
+		TerrainCursor.global_position = result.position
 	
 	last_tick += 1
 	if (last_tick > 5):
@@ -78,15 +80,19 @@ func _process_vertex_cubes():
 	
 	var arrays = terrain.mesh.surface_get_arrays(0)
 	var verts = arrays[Mesh.ARRAY_VERTEX]
-	
+	print(TerrainCursor.size[0])
 	for v in range(mdt.get_vertex_count()):
-		if (is_point_in_sphere(verts[v] * terrain_loc, $TerrainCursor.global_position, $TerrainCursor.size[0])):
-			var vertex = mdt.get_vertex(v)
+		var vertex:  = mdt.get_vertex(v)
+		if (is_point_in_sphere(vertex * terrain_loc, TerrainCursor.global_position, TerrainCursor.size[0]/2)):
+			print("v*t")
+			print(vertex * terrain_loc)
+			print("global_position")
+			print(global_position)
 			# 1. Create the MeshInstance3D node
 			var mesh_instance = MeshInstance3D.new()
 			# 2. Create the specific mesh shape (e.g., BoxMesh)
 			var box_mesh = BoxMesh.new()
-			box_mesh.size = Vector3(0.1, 0.1, 0.1) # Size 1x1x1
+			box_mesh.size = Vector3(0.2, 0.2, 0.2) # Size 1x1x1
 			# 3. Assign the mesh to the instance
 			mesh_instance.mesh = box_mesh
 			# 4. Position the mesh in the world
