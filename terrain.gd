@@ -17,18 +17,12 @@ func _generate_terrain():
 	# Set width (X) based on mesh_size.x, calculate height (Z) based on aspect ratio
 	plane_mesh.size = Vector2(mesh_size.x, mesh_size.y)
 
-	# Apply material override if one is set (useful for initial visualization)
-	if material_override:
-		self.set_surface_override_material(0, material_override)
-
 	# 3. Get mesh data and modify vertices
 	generate_terrain_from_heightmap(plane_mesh)
 
 
 ## Step 2 & 3: Generate Geometry from Heightmap Data
 func generate_terrain_from_heightmap(plane_mesh: PlaneMesh):
-	# Get the base mesh arrays from the PlaneMesh configuration
-	var arrays = ArrayMesh.new()
 	var mesh_data = plane_mesh.get_mesh_arrays()
 
 	# We are primarily interested in the vertices array

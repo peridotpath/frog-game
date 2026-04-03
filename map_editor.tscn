@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="10_dnihh"]
 [ext_resource type="Texture2D" uid="uid://duf4bkba71eyu" path="res://assets/terrain_cyl_icon.png" id="11_e65o5"]
 [ext_resource type="PackedScene" uid="uid://cjs3hr4mxyqbr" path="res://assets/models/frog_model.glb" id="12_8cu4w"]
+[ext_resource type="PackedScene" uid="uid://dga5evsgw325e" path="res://assets/models/frog_2_model.glb" id="15_86fvb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
 render_priority = 0
@@ -53,7 +54,9 @@ size = Vector3(4.1312866, 0.43762207, 3.3197021)
 [node name="MapEditor" type="Node3D" unique_id=205229475 node_paths=PackedStringArray("UIPanel", "Brush")]
 script = ExtResource("1_6ykog")
 UIPanel = NodePath("UILayer/ColorRect")
-Brush = NodePath("Camera3d/Decal")
+Brush = NodePath("Camera3d/TerrainCursor")
+
+[node name="VertexCubes" type="Node3D" parent="." unique_id=368670937]
 
 [node name="GameLight" type="DirectionalLight3D" parent="." unique_id=909131117]
 transform = Transform3D(0.81534797, -0.50983167, 0.27437094, -0.2581235, 0.104092255, 0.96048796, -0.51824707, -0.8539535, -0.046728127, 0, 10.208865, 0)
@@ -66,11 +69,13 @@ script = ExtResource("1_vga7x")
 transform = Transform3D(0.99999994, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.8081121, 0)
 script = ExtResource("5_e2fnq")
 
-[node name="Decal" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171]
+[node name="TerrainCursor" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171 node_paths=PackedStringArray("terrain", "cubes")]
 transform = Transform3D(1, 0, 0, 0, 0.20247962, -0.9792865, 0, 0.9792865, 0.20247962, 0, -0.74996614, -3.6271887)
 cast_shadow = 0
 mesh = SubResource("BoxMesh_e65o5")
 script = ExtResource("8_e2fnq")
+terrain = NodePath("../../Terrain")
+cubes = NodePath("../../VertexCubes")
 texture = ExtResource("6_e2fnq")
 enable_fade = false
 metadata/_custom_type_script = "uid://feckn7f3pmud"
@@ -173,7 +178,7 @@ offset_bottom = 21.0
 text = "STR"
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=695263020]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52712727, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 0.52712727, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1059469548]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27020264)
@@ -181,6 +186,16 @@ shape = SubResource("BoxShape3D_6ykog")
 
 [node name="frog_model" parent="RigidBody3D" unique_id=1446567459 instance=ExtResource("12_8cu4w")]
 
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=360399718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 0.52712727, -6.77082)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1356320380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27020264)
+shape = SubResource("BoxShape3D_6ykog")
+
+[node name="frog_2_model" parent="RigidBody3D2" unique_id=93551001 instance=ExtResource("15_86fvb")]
+
 [connection signal="pressed" from="UILayer/UIExpand" to="." method="_on_ui_expand_pressed"]
 [connection signal="pressed" from="UILayer/ColorRect/UIClose" to="." method="_on_ui_close_pressed"]
 [connection signal="value_changed" from="UILayer/ColorRect/GausSection/SizeSlider" to="." method="_on_size_slider_value_changed"]
+[connection signal="value_changed" from="UILayer/ColorRect/GausSection/StrSlider" to="." method="_on_str_slider_value_changed"]

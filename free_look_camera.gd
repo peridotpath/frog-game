@@ -55,4 +55,4 @@ func _process(delta):
 	var query = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
 	var result = space_state.intersect_ray(query)
 	if result:
-		$Decal.global_position = result.position
+		$TerrainCursor.global_position = result.position
