@@ -29,13 +29,56 @@ func _input(event):
 	
 	if event is InputEventMouseButton:
 		match event.button_index:
-			MOUSE_BUTTON_RIGHT:
+			MOUSE_BUTTON_MIDDLE:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
 			MOUSE_BUTTON_WHEEL_UP: # increase fly velocity
 				_velocity = clamp(_velocity * speed_scale, min_speed, max_speed)
 			MOUSE_BUTTON_WHEEL_DOWN: # decrease fly velocity
 				_velocity = clamp(_velocity / speed_scale, min_speed, max_speed)
+			MOUSE_BUTTON_WHEEL_LEFT: # decrease fly velocity
+				_velocity = clamp(_velocity / speed_scale, min_speed, max_speed)
+			MOUSE_BUTTON_LEFT:
+				_handle_gaussian_deform(1)
+			MOUSE_BUTTON_RIGHT:
+				_handle_gaussian_deform(-1)
 
+func _handle_gaussian_deform(direction: float):
+	var mdt = MeshDataTool.new()
+	mdt.create_from_surface(terrain.mesh, 0)
+	var terrain_loc = terrain.global_transform
+
+	var arrays = terrain.mesh.surface_get_arrays(0)
+	
+	var verts = arrays[Mesh.ARRAY_VERTEX]
+	for i in range(mdt.get_vertex_count()):
+		var vertex = mdt.get_vertex(i)
+
+		if (is_point_in_sphere(vertex * terrain_loc,TerrainCursor.global_position,TerrainCursor.size[0]/2)):
+			var y_change = gaussian_deform((vertex * terrain_loc).distance_to(TerrainCursor.global_position), 0, TerrainCursor.size[0]/2)
+			verts[i] = vertex + Vector3(0,direction*y_change*1,0)
+			
+	# 1. Update the vertex array as you already are
+	arrays[Mesh.ARRAY_VERTEX] = verts
+
+	# 2. Use SurfaceTool to regenerate the normals
+	var st = SurfaceTool.new()
+	st.index()
+	st.create_from_arrays(arrays) # Load your modified vertex data
+	st.generate_normals()         # This actually calculates the new slope
+	st.generate_tangents()        # Recommended for consistent lighting
+
+	# 3. Commit the result back to the terrain
+	var new_mesh = st.commit()
+	terrain.mesh = new_mesh
+
+	# 4. Update collision to match the new shape
+	terrain.create_trimesh_collision()
+	
+func gaussian_deform(x: float, mean: float, std_dev: float) -> float:
+	var exponent = -0.5 * pow((x - mean) / std_dev, 2)
+	var factor = 1.0 / (std_dev * sqrt(2.0 * PI))
+	return factor * exp(exponent)
+	
 func _process(delta):
 	if not current:
 		return
@@ -80,14 +123,9 @@ func _process_vertex_cubes():
 	
 	var arrays = terrain.mesh.surface_get_arrays(0)
 	var verts = arrays[Mesh.ARRAY_VERTEX]
-	print(TerrainCursor.size[0])
 	for v in range(mdt.get_vertex_count()):
 		var vertex:  = mdt.get_vertex(v)
 		if (is_point_in_sphere(vertex * terrain_loc, TerrainCursor.global_position, TerrainCursor.size[0]/2)):
-			print("v*t")
-			print(vertex * terrain_loc)
-			print("global_position")
-			print(global_position)
 			# 1. Create the MeshInstance3D node
 			var mesh_instance = MeshInstance3D.new()
 			# 2. Create the specific mesh shape (e.g., BoxMesh)
