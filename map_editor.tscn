@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dqhodvjmbqp0h"]
+
+[ext_resource type="Shader" uid="uid://ci8qw0v58uatc" path="res://shaders/grasslands.gdshader" id="1_bh6pa"]
+[ext_resource type="Script" uid="uid://cxymk0n5i1hqe" path="res://terrain.gd" id="1_vga7x"]
+[ext_resource type="Texture2D" uid="uid://dbkex1e5ftjne" path="res://assets/grass.jpg" id="2_xsg28"]
+[ext_resource type="Texture2D" uid="uid://csli4fwdmjqdo" path="res://assets/rocks.jpg" id="3_13cpq"]
+[ext_resource type="Shader" uid="uid://foqf6idimvb0" path="res://addons/decal_compatibility/decal.gdshader" id="5_bnmdf"]
+[ext_resource type="Script" uid="uid://y4lint7upc5f" path="res://free_look_camera.gd" id="5_e2fnq"]
+[ext_resource type="Texture2D" uid="uid://bq0w2g0pyfms4" path="res://assets/target.png" id="6_e2fnq"]
+[ext_resource type="Script" uid="uid://bvp2ebnna5oc6" path="res://terrain_cursor.gd" id="8_e2fnq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
+render_priority = 0
+shader = ExtResource("1_bh6pa")
+shader_parameter/grass_tex = ExtResource("2_xsg28")
+shader_parameter/rock_tex = ExtResource("3_13cpq")
+shader_parameter/min_rock_slope = 0.5
+shader_parameter/max_grass_slope = 0.9
+shader_parameter/uv_scale = 15.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnihh"]
+render_priority = 0
+shader = ExtResource("5_bnmdf")
+shader_parameter/albedo = ExtResource("6_e2fnq")
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/albedo_mix = 1.0
+shader_parameter/scale_mod = Vector3(0.5, 0.5, 0.5)
+shader_parameter/cube_half_size = Vector3(1, 1, 1)
+shader_parameter/enable_y_fade = false
+shader_parameter/fade_start = 0.3
+shader_parameter/fade_end = 0.7
+shader_parameter/fade_power = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_e65o5"]
+material = SubResource("ShaderMaterial_dnihh")
+size = Vector3(2, 2, 2)
+
+[node name="MapEditor" type="Node3D" unique_id=205229475]
+
+[node name="GameLight" type="DirectionalLight3D" parent="." unique_id=909131117]
+transform = Transform3D(0.81534797, -0.50983167, 0.27437094, -0.2581235, 0.104092255, 0.96048796, -0.51824707, -0.8539535, -0.046728127, 0, 10.208865, 0)
+
+[node name="Terrain" type="MeshInstance3D" parent="." unique_id=392707373]
+material_override = SubResource("ShaderMaterial_bh6pa")
+script = ExtResource("1_vga7x")
+
+[node name="Camera3d" type="Camera3D" parent="." unique_id=799265956]
+transform = Transform3D(0.9983102, -0.05649288, 0.013609998, -0.010952108, 0.047093898, 0.99883044, -0.05706776, -0.9972917, 0.046395615, 0, 3.8081121, 0)
+script = ExtResource("5_e2fnq")
+
+[node name="Decal" type="MeshInstance3D" parent="Camera3d" unique_id=1608092171]
+transform = Transform3D(1, 0, 0, 0, 0.20247962, -0.9792865, 0, 0.9792865, 0.20247962, 0, -0.74996614, -3.6271887)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_e65o5")
+script = ExtResource("8_e2fnq")
+texture = ExtResource("6_e2fnq")
+enable_fade = false
+metadata/_custom_type_script = "uid://feckn7f3pmud"
