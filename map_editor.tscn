@@ -9,14 +9,11 @@
 [ext_resource type="Script" uid="uid://y4lint7upc5f" path="res://free_look_camera.gd" id="5_e2fnq"]
 [ext_resource type="Texture2D" uid="uid://bq0w2g0pyfms4" path="res://assets/target.png" id="6_e2fnq"]
 [ext_resource type="Script" uid="uid://bvp2ebnna5oc6" path="res://terrain_cursor.gd" id="8_e2fnq"]
-<<<<<<< Updated upstream
-=======
 [ext_resource type="Texture2D" uid="uid://dq64nlj6fyi3j" path="res://assets/terrain_gaus_icon.png" id="9_ifbpd"]
 [ext_resource type="Texture2D" uid="uid://c14ttk5krnhst" path="res://assets/ui_expand.png" id="10_86fvb"]
 [ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="10_dnihh"]
 [ext_resource type="Texture2D" uid="uid://duf4bkba71eyu" path="res://assets/terrain_cyl_icon.png" id="11_e65o5"]
 [ext_resource type="PackedScene" uid="uid://cjs3hr4mxyqbr" path="res://assets/models/frog_model.glb" id="12_8cu4w"]
->>>>>>> Stashed changes
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
 render_priority = 0
@@ -44,9 +41,6 @@ shader_parameter/fade_power = 1.0
 material = SubResource("ShaderMaterial_dnihh")
 size = Vector3(2, 2, 2)
 
-<<<<<<< Updated upstream
-[node name="MapEditor" type="Node3D" unique_id=205229475]
-=======
 [sub_resource type="LabelSettings" id="LabelSettings_dnihh"]
 font_size = 32
 
@@ -60,7 +54,6 @@ size = Vector3(4.1312866, 0.43762207, 3.3197021)
 script = ExtResource("1_6ykog")
 UIPanel = NodePath("UILayer/ColorRect")
 Brush = NodePath("Camera3d/Decal")
->>>>>>> Stashed changes
 
 [node name="GameLight" type="DirectionalLight3D" parent="." unique_id=909131117]
 transform = Transform3D(0.81534797, -0.50983167, 0.27437094, -0.2581235, 0.104092255, 0.96048796, -0.51824707, -0.8539535, -0.046728127, 0, 10.208865, 0)
@@ -81,8 +74,6 @@ script = ExtResource("8_e2fnq")
 texture = ExtResource("6_e2fnq")
 enable_fade = false
 metadata/_custom_type_script = "uid://feckn7f3pmud"
-<<<<<<< Updated upstream
-=======
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=1606261951]
 
@@ -193,4 +184,3 @@ shape = SubResource("BoxShape3D_6ykog")
 [connection signal="pressed" from="UILayer/UIExpand" to="." method="_on_ui_expand_pressed"]
 [connection signal="pressed" from="UILayer/ColorRect/UIClose" to="." method="_on_ui_close_pressed"]
 [connection signal="value_changed" from="UILayer/ColorRect/GausSection/SizeSlider" to="." method="_on_size_slider_value_changed"]
->>>>>>> Stashed changes
