@@ -37,10 +37,7 @@ func _input(event):
 				_velocity = clamp(_velocity / speed_scale, min_speed, max_speed)
 			MOUSE_BUTTON_WHEEL_LEFT: # decrease fly velocity
 				_velocity = clamp(_velocity / speed_scale, min_speed, max_speed)
-			MOUSE_BUTTON_LEFT:
-				_handle_gaussian_deform(1)
-			MOUSE_BUTTON_RIGHT:
-				_handle_gaussian_deform(-1)
+
 
 func _handle_gaussian_deform(direction: float):
 	var mdt = MeshDataTool.new()
@@ -82,6 +79,11 @@ func gaussian_deform(x: float, mean: float, std_dev: float) -> float:
 func _process(delta):
 	if not current:
 		return
+		
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_handle_gaussian_deform(1)
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		_handle_gaussian_deform(-1)
 		
 	var direction = Vector3(
 		float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A)),
