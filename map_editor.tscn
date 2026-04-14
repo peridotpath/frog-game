@@ -3,18 +3,22 @@
 [ext_resource type="Script" uid="uid://f7e0cqni6g4c" path="res://map_editor.gd" id="1_6ykog"]
 [ext_resource type="Shader" uid="uid://ci8qw0v58uatc" path="res://shaders/grasslands.gdshader" id="1_bh6pa"]
 [ext_resource type="Script" uid="uid://cxymk0n5i1hqe" path="res://terrain.gd" id="1_vga7x"]
+[ext_resource type="Script" uid="uid://cqcl0nhvdg2d6" path="res://vertex_cubes.gd" id="2_0tlqm"]
 [ext_resource type="Texture2D" uid="uid://dbkex1e5ftjne" path="res://assets/grass.jpg" id="2_xsg28"]
 [ext_resource type="Texture2D" uid="uid://csli4fwdmjqdo" path="res://assets/rocks.jpg" id="3_13cpq"]
 [ext_resource type="Shader" uid="uid://foqf6idimvb0" path="res://addons/decal_compatibility/decal.gdshader" id="5_bnmdf"]
 [ext_resource type="Script" uid="uid://y4lint7upc5f" path="res://free_look_camera.gd" id="5_e2fnq"]
 [ext_resource type="Texture2D" uid="uid://bq0w2g0pyfms4" path="res://assets/target.png" id="6_e2fnq"]
-[ext_resource type="Script" uid="uid://feckn7f3pmud" path="res://addons/decal_compatibility/decal_compatibility.gd" id="9_86fvb"]
 [ext_resource type="Texture2D" uid="uid://dq64nlj6fyi3j" path="res://assets/terrain_gaus_icon.png" id="9_ifbpd"]
+[ext_resource type="Script" uid="uid://bvp2ebnna5oc6" path="res://terrain_cursor.gd" id="10_0tlqm"]
 [ext_resource type="Texture2D" uid="uid://c14ttk5krnhst" path="res://assets/ui_expand.png" id="10_86fvb"]
 [ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="10_dnihh"]
 [ext_resource type="Texture2D" uid="uid://duf4bkba71eyu" path="res://assets/terrain_cyl_icon.png" id="11_e65o5"]
 [ext_resource type="PackedScene" uid="uid://cjs3hr4mxyqbr" path="res://assets/models/frog_model.glb" id="12_8cu4w"]
+[ext_resource type="Texture2D" uid="uid://cgxta13tii0j8" path="res://assets/terrain_place_icon.png" id="13_3xh5y"]
 [ext_resource type="PackedScene" uid="uid://dga5evsgw325e" path="res://assets/models/frog_2_model.glb" id="15_86fvb"]
+[ext_resource type="Texture2D" uid="uid://tgj7vn663cra" path="res://assets/terrain_smooth_icon.png" id="15_hrci8"]
+[ext_resource type="PackedScene" uid="uid://deyq8xpumklu2" path="res://tree.tscn" id="19_nbdi8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
 render_priority = 0
@@ -25,14 +29,16 @@ shader_parameter/min_rock_slope = 0.5
 shader_parameter/max_grass_slope = 0.9
 shader_parameter/uv_scale = 15.0
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3xh5y"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dnihh"]
 render_priority = 0
 shader = ExtResource("5_bnmdf")
 shader_parameter/albedo = ExtResource("6_e2fnq")
 shader_parameter/modulate = Color(1, 1, 1, 0.44313726)
 shader_parameter/albedo_mix = 1.0
-shader_parameter/scale_mod = Vector3(0.5, 0.5, 0.5)
-shader_parameter/cube_half_size = Vector3(1, 1, 1)
+shader_parameter/scale_mod = Vector3(inf, inf, inf)
+shader_parameter/cube_half_size = Vector3(0, 0, 0)
 shader_parameter/enable_y_fade = false
 shader_parameter/fade_start = 0.3
 shader_parameter/fade_end = 0.7
@@ -40,7 +46,7 @@ shader_parameter/fade_power = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_e65o5"]
 material = SubResource("ShaderMaterial_dnihh")
-size = Vector3(2, 2, 2)
+size = Vector3(0, 0, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_dnihh"]
 font_size = 32
@@ -48,37 +54,56 @@ font_size = 32
 [sub_resource type="LabelSettings" id="LabelSettings_j6wux"]
 font_size = 22
 
+[sub_resource type="LabelSettings" id="LabelSettings_hrci8"]
+font_size = 12
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_6ykog"]
 size = Vector3(4.1312866, 0.43762207, 3.3197021)
 
-[node name="MapEditor" type="Node3D" unique_id=205229475 node_paths=PackedStringArray("UIPanel", "Brush")]
+[node name="MapEditor" type="Node3D" unique_id=205229475 node_paths=PackedStringArray("UIPanel", "Cursor", "BrushSelection", "PlacerSelection", "BrushSelectionLabel", "BrushDescriptionLabel")]
 script = ExtResource("1_6ykog")
-UIPanel = NodePath("UILayer/ColorRect")
-Brush = NodePath("Terrain/TerrainCursor")
+UIPanel = NodePath("UILayer/UIArea")
+Cursor = NodePath("Terrain/TerrainCursor")
+BrushSelection = NodePath("UILayer/UIArea/BrushSelection")
+PlacerSelection = NodePath("UILayer/UIArea/PlacerSelection")
+BrushSelectionLabel = NodePath("UILayer/UIArea/BrushSelection")
+BrushDescriptionLabel = NodePath("UILayer/UIArea/BrushSelection/BrushDescription")
 
-[node name="VertexCubes" type="Node3D" parent="." unique_id=368670937]
+[node name="VertexCubes" type="Node3D" parent="." unique_id=368670937 node_paths=PackedStringArray("Terrain", "Cursor", "Main")]
+script = ExtResource("2_0tlqm")
+Terrain = NodePath("../Terrain")
+Cursor = NodePath("../Terrain/TerrainCursor")
+Main = NodePath("..")
 
 [node name="GameLight" type="DirectionalLight3D" parent="." unique_id=909131117]
 transform = Transform3D(0.81534797, -0.50983167, 0.27437094, -0.2581235, 0.104092255, 0.96048796, -0.51824707, -0.8539535, -0.046728127, 0, 10.208865, 0)
 
-[node name="Camera3d" type="Camera3D" parent="." unique_id=799265956 node_paths=PackedStringArray("TerrainCursor", "terrain", "vertex_cubes")]
+[node name="Camera3d" type="Camera3D" parent="." unique_id=799265956]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.8081121, 0)
 script = ExtResource("5_e2fnq")
-TerrainCursor = NodePath("../Terrain/TerrainCursor")
-terrain = NodePath("../Terrain")
-vertex_cubes = NodePath("../VertexCubes")
 
 [node name="Terrain" type="MeshInstance3D" parent="." unique_id=392707373]
 material_override = SubResource("ShaderMaterial_bh6pa")
 script = ExtResource("1_vga7x")
 
-[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171]
+[node name="ObjectPlacementCursor" type="MeshInstance3D" parent="Terrain" unique_id=2077337180]
+transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
+mesh = SubResource("CapsuleMesh_3xh5y")
+
+[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "ObjectPlacementCursor")]
 transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
 cast_shadow = 0
 gi_lightmap_scale = 0
 mesh = SubResource("BoxMesh_e65o5")
 Skeleton = null
-script = ExtResource("9_86fvb")
+script = ExtResource("10_0tlqm")
+Terrain = NodePath("..")
+Camera = NodePath("../../Camera3d")
+Home = NodePath("../..")
+UIArea = NodePath("../../UILayer/UIArea")
+SelectedPlaceable = null
+ObjectPlacementCursor = NodePath("../ObjectPlacementCursor")
+size = Vector3(0, 0, 0)
 texture = ExtResource("6_e2fnq")
 modulate = Color(1, 1, 1, 0.44313726)
 enable_fade = false
@@ -94,12 +119,13 @@ offset_bottom = 48.0
 texture_normal = ExtResource("10_86fvb")
 stretch_mode = 0
 
-[node name="ColorRect" type="ColorRect" parent="UILayer" unique_id=1868512707]
-offset_right = 249.0
+[node name="UIArea" type="ColorRect" parent="UILayer" unique_id=1868512707]
+offset_right = 247.0
 offset_bottom = 453.0
+mouse_force_pass_scroll_events = false
 color = Color(0.2079221, 0.24501562, 0.17417488, 1)
 
-[node name="UIClose" type="TextureButton" parent="UILayer/ColorRect" unique_id=1674367031]
+[node name="UIClose" type="TextureButton" parent="UILayer/UIArea" unique_id=1674367031]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 5.0
@@ -108,25 +134,43 @@ offset_bottom = 48.0
 texture_normal = ExtResource("10_dnihh")
 stretch_mode = 0
 
-[node name="GausButton" type="TextureButton" parent="UILayer/ColorRect" unique_id=449085232]
+[node name="PlaceButton" type="TextureButton" parent="UILayer/UIArea" unique_id=1303876573]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 148.0
+offset_right = 73.0
+offset_bottom = 212.0
+texture_normal = ExtResource("13_3xh5y")
+stretch_mode = 0
+
+[node name="GausButton" type="TextureButton" parent="UILayer/UIArea" unique_id=449085232]
 layout_mode = 0
 offset_left = 7.0
-offset_top = 70.0
+offset_top = 72.0
 offset_right = 71.0
-offset_bottom = 134.0
+offset_bottom = 136.0
 texture_normal = ExtResource("9_ifbpd")
 stretch_mode = 0
 
-[node name="CylButton" type="TextureButton" parent="UILayer/ColorRect" unique_id=771056574]
+[node name="CylButton" type="TextureButton" parent="UILayer/UIArea" unique_id=771056574]
 layout_mode = 0
-offset_left = 77.0
-offset_top = 70.0
-offset_right = 141.0
-offset_bottom = 134.0
+offset_left = 83.0
+offset_top = 72.0
+offset_right = 147.0
+offset_bottom = 136.0
 texture_normal = ExtResource("11_e65o5")
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="UILayer/ColorRect" unique_id=521629018]
+[node name="SmoothButton" type="TextureButton" parent="UILayer/UIArea" unique_id=329893313]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 72.0
+offset_right = 224.0
+offset_bottom = 136.0
+texture_normal = ExtResource("15_hrci8")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="UILayer/UIArea" unique_id=521629018]
 layout_mode = 0
 offset_left = 58.0
 offset_top = 4.0
@@ -135,30 +179,41 @@ offset_bottom = 53.0
 text = "MENU"
 label_settings = SubResource("LabelSettings_dnihh")
 
-[node name="ColorRect" type="ColorRect" parent="UILayer/ColorRect" unique_id=780029154]
+[node name="ColorRect" type="ColorRect" parent="UILayer/UIArea" unique_id=780029154]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 55.0
-offset_right = 237.0
+offset_right = 209.0
 offset_bottom = 61.0
 
-[node name="GausSection" type="Label" parent="UILayer/ColorRect" unique_id=455347042]
+[node name="BrushSelection" type="Label" parent="UILayer/UIArea" unique_id=455347042]
+visible = false
 layout_mode = 0
-offset_left = 13.0
-offset_top = 211.0
-offset_right = 53.0
-offset_bottom = 234.0
+offset_left = 14.0
+offset_top = 237.0
+offset_right = 203.0
+offset_bottom = 268.0
 text = "GAUSSIAN BRUSH"
 label_settings = SubResource("LabelSettings_j6wux")
 
-[node name="SizeSlider" type="HSlider" parent="UILayer/ColorRect/GausSection" unique_id=1732904656]
+[node name="BrushDescription" type="Label" parent="UILayer/UIArea/BrushSelection" unique_id=96945965]
+layout_mode = 0
+offset_left = -9.0
+offset_top = 119.0
+offset_right = 210.0
+offset_bottom = 199.0
+text = "Click and hold the left mouse to raise and right mouse to lower terrain."
+label_settings = SubResource("LabelSettings_hrci8")
+autowrap_mode = 2
+
+[node name="SizeSlider" type="HSlider" parent="UILayer/UIArea/BrushSelection" unique_id=1732904656]
 layout_mode = 0
 offset_left = 56.0
-offset_top = 57.0
-offset_right = 208.0
-offset_bottom = 79.0
+offset_top = 44.0
+offset_right = 189.0
+offset_bottom = 66.0
 
-[node name="Label" type="Label" parent="UILayer/ColorRect/GausSection/SizeSlider" unique_id=1265623820]
+[node name="Label" type="Label" parent="UILayer/UIArea/BrushSelection/SizeSlider" unique_id=1265623820]
 layout_mode = 0
 offset_left = -49.0
 offset_top = -2.0
@@ -166,20 +221,40 @@ offset_right = -17.0
 offset_bottom = 21.0
 text = "SIZE"
 
-[node name="StrSlider" type="HSlider" parent="UILayer/ColorRect/GausSection" unique_id=1476748165]
+[node name="StrSlider" type="HSlider" parent="UILayer/UIArea/BrushSelection" unique_id=1476748165]
 layout_mode = 0
 offset_left = 56.0
-offset_top = 82.0
-offset_right = 208.0
-offset_bottom = 104.0
+offset_top = 69.0
+offset_right = 190.0
+offset_bottom = 91.0
 
-[node name="Label" type="Label" parent="UILayer/ColorRect/GausSection/StrSlider" unique_id=475049845]
+[node name="Label" type="Label" parent="UILayer/UIArea/BrushSelection/StrSlider" unique_id=475049845]
 layout_mode = 0
 offset_left = -44.0
 offset_top = -2.0
 offset_right = -15.0
 offset_bottom = 21.0
 text = "STR"
+
+[node name="PlacerSelection" type="Label" parent="UILayer/UIArea" unique_id=1168769451]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 230.0
+offset_right = 125.0
+offset_bottom = 253.0
+text = "PLACE OBJECT"
+
+[node name="PlacementItemOptions" type="OptionButton" parent="UILayer/UIArea/PlacerSelection" unique_id=1165086668]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 31.0
+offset_right = 141.0
+offset_bottom = 62.0
+item_count = 2
+popup/item_0/text = "Tree"
+popup/item_0/id = 0
+popup/item_1/text = "Mushroom"
+popup/item_1/id = 1
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=695263020]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 1.5116389, 0)
@@ -200,7 +275,13 @@ shape = SubResource("BoxShape3D_6ykog")
 
 [node name="frog_2_model" parent="RigidBody3D2" unique_id=93551001 instance=ExtResource("15_86fvb")]
 
+[node name="Tree" parent="." unique_id=63894144 instance=ExtResource("19_nbdi8")]
+
 [connection signal="pressed" from="UILayer/UIExpand" to="." method="_on_ui_expand_pressed"]
-[connection signal="pressed" from="UILayer/ColorRect/UIClose" to="." method="_on_ui_close_pressed"]
-[connection signal="value_changed" from="UILayer/ColorRect/GausSection/SizeSlider" to="." method="_on_size_slider_value_changed"]
-[connection signal="value_changed" from="UILayer/ColorRect/GausSection/StrSlider" to="." method="_on_str_slider_value_changed"]
+[connection signal="pressed" from="UILayer/UIArea/UIClose" to="." method="_on_ui_close_pressed"]
+[connection signal="pressed" from="UILayer/UIArea/PlaceButton" to="." method="_on_place_button_pressed"]
+[connection signal="pressed" from="UILayer/UIArea/GausButton" to="." method="_on_gaus_button_pressed"]
+[connection signal="pressed" from="UILayer/UIArea/CylButton" to="." method="_on_cyl_button_pressed"]
+[connection signal="value_changed" from="UILayer/UIArea/BrushSelection/SizeSlider" to="." method="_on_size_slider_value_changed"]
+[connection signal="value_changed" from="UILayer/UIArea/BrushSelection/StrSlider" to="." method="_on_str_slider_value_changed"]
+[connection signal="item_selected" from="UILayer/UIArea/PlacerSelection/PlacementItemOptions" to="Terrain/TerrainCursor" method="_on_placement_item_options_item_selected"]

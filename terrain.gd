@@ -20,7 +20,6 @@ func _generate_terrain():
 	# 3. Get mesh data and modify vertices
 	generate_terrain_from_heightmap(plane_mesh)
 
-
 ## Step 2 & 3: Generate Geometry from Heightmap Data
 func generate_terrain_from_heightmap(plane_mesh: PlaneMesh):
 	var mesh_data = plane_mesh.get_mesh_arrays()
