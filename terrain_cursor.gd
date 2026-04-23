@@ -17,8 +17,10 @@ enum PLACEABLE_OBJECT {Tree, Mushroom}
 @export var BrushMode: BRUSH_MODE
 
 @export var SelectedPlaceable: PLACEABLE_OBJECT
-
+@export var PlacedObjects: Node3D
 @export var placement_cursor: StaticBody3D
+
+var tree_scene = preload("res://tree.tscn")
 
 var mouse_left_held: bool
 var mouse_right_held: bool
@@ -54,6 +56,12 @@ func _process(delta: float):
 			else:
 				_handle_deform(-1)
 				mouse_right_held = true
+	else:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			var tree = tree_scene.instantiate()
+			tree.global_position = global_position
+			PlacedObjects.add_child(tree)
+		
 		
 func _position_cursor(mouse_pos: Vector2):
 

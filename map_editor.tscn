@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://dga5evsgw325e" path="res://assets/models/frog_2_model.glb" id="15_86fvb"]
 [ext_resource type="Texture2D" uid="uid://tgj7vn663cra" path="res://assets/terrain_smooth_icon.png" id="15_hrci8"]
 [ext_resource type="PackedScene" uid="uid://deyq8xpumklu2" path="res://tree.tscn" id="19_nbdi8"]
+[ext_resource type="Texture2D" uid="uid://b5ge0lmjxgjrg" path="res://assets/water.png" id="20_cfb81"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bh6pa"]
 render_priority = 0
@@ -58,6 +59,12 @@ font_size = 12
 [sub_resource type="BoxShape3D" id="BoxShape3D_6ykog"]
 size = Vector3(4.1312866, 0.43762207, 3.3197021)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_qg1qr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kh10x"]
+albedo_color = Color(1, 1, 1, 0.4509804)
+albedo_texture = ExtResource("20_cfb81")
+
 [node name="MapEditor" type="Node3D" unique_id=205229475 node_paths=PackedStringArray("UIPanel", "Cursor", "BrushSelection", "PlacerSelection", "BrushSelectionLabel", "BrushDescriptionLabel")]
 script = ExtResource("1_6ykog")
 UIPanel = NodePath("UILayer/UIArea")
@@ -68,6 +75,8 @@ BrushSelectionLabel = NodePath("UILayer/UIArea/BrushSelection")
 BrushDescriptionLabel = NodePath("UILayer/UIArea/BrushSelection/BrushDescription")
 
 [node name="PlacementCursor" parent="." unique_id=63894144 instance=ExtResource("19_nbdi8")]
+
+[node name="PlacedObjects" type="Node3D" parent="." unique_id=882222821]
 
 [node name="VertexCubes" type="Node3D" parent="." unique_id=368670937 node_paths=PackedStringArray("Terrain", "Cursor", "Main")]
 script = ExtResource("2_0tlqm")
@@ -86,7 +95,7 @@ script = ExtResource("5_e2fnq")
 material_override = SubResource("ShaderMaterial_bh6pa")
 script = ExtResource("1_vga7x")
 
-[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "placement_cursor")]
+[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "PlacedObjects", "placement_cursor")]
 transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
 cast_shadow = 0
 gi_lightmap_scale = 0
@@ -97,6 +106,7 @@ Terrain = NodePath("..")
 Camera = NodePath("../../Camera3d")
 Home = NodePath("../..")
 UIArea = NodePath("../../UILayer/UIArea")
+PlacedObjects = NodePath("../../PlacedObjects")
 placement_cursor = NodePath("../../PlacementCursor")
 size = Vector3(0, 0, 0)
 texture = ExtResource("6_e2fnq")
@@ -269,6 +279,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27
 shape = SubResource("BoxShape3D_6ykog")
 
 [node name="frog_2_model" parent="RigidBody3D2" unique_id=93551001 instance=ExtResource("15_86fvb")]
+
+[node name="Water" type="MeshInstance3D" parent="." unique_id=430128431]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, -3.961546, 0)
+mesh = SubResource("PlaneMesh_qg1qr")
+surface_material_override/0 = SubResource("StandardMaterial3D_kh10x")
 
 [connection signal="pressed" from="UILayer/UIExpand" to="." method="_on_ui_expand_pressed"]
 [connection signal="pressed" from="UILayer/UIArea/UIClose" to="." method="_on_ui_close_pressed"]
