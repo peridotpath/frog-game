@@ -48,3 +48,6 @@ func generate_terrain_from_heightmap(plane_mesh: PlaneMesh):
 	self.mesh = final_mesh
 	
 	create_trimesh_collision()
+	for n in get_children():
+		if(n is StaticBody3D):
+			n.set_collision_layer_value(2, true)

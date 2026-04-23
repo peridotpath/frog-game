@@ -29,8 +29,6 @@ shader_parameter/min_rock_slope = 0.5
 shader_parameter/max_grass_slope = 0.9
 shader_parameter/uv_scale = 15.0
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_3xh5y"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dnihh"]
 render_priority = 0
 shader = ExtResource("5_bnmdf")
@@ -86,11 +84,10 @@ script = ExtResource("5_e2fnq")
 material_override = SubResource("ShaderMaterial_bh6pa")
 script = ExtResource("1_vga7x")
 
-[node name="ObjectPlacementCursor" type="MeshInstance3D" parent="Terrain" unique_id=2077337180]
+[node name="ObjectPlacementCursor" type="Node3D" parent="Terrain" unique_id=1466528152]
 transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
-mesh = SubResource("CapsuleMesh_3xh5y")
 
-[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "ObjectPlacementCursor")]
+[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "ObjectPlacementCursor", "ObjectToBePlaced")]
 transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
 cast_shadow = 0
 gi_lightmap_scale = 0
@@ -101,8 +98,8 @@ Terrain = NodePath("..")
 Camera = NodePath("../../Camera3d")
 Home = NodePath("../..")
 UIArea = NodePath("../../UILayer/UIArea")
-SelectedPlaceable = null
-ObjectPlacementCursor = NodePath("../ObjectPlacementCursor")
+ObjectPlacementCursor = NodePath("Tree")
+ObjectToBePlaced = NodePath("../../Tree")
 size = Vector3(0, 0, 0)
 texture = ExtResource("6_e2fnq")
 modulate = Color(1, 1, 1, 0.44313726)
