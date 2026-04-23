@@ -18,11 +18,7 @@ enum PLACEABLE_OBJECT {Tree, Mushroom}
 
 @export var SelectedPlaceable: PLACEABLE_OBJECT
 
-@export var ObjectPlacementCursor: Node3D
-
-@export var ObjectToBePlaced: Node3D
-
-var tree = preload("res://tree.tscn")
+@export var placement_cursor: StaticBody3D
 
 var mouse_left_held: bool
 var mouse_right_held: bool
@@ -30,15 +26,10 @@ var mouse_right_held: bool
 func _switch_cursors(is_placement: bool):
 	if is_placement:
 		hide()
-		ObjectPlacementCursor.show()
+		placement_cursor.show()
 	else:
 		show()
-		ObjectPlacementCursor.hide()
-
-func _ready():
-	var myTree = tree.instantiate()
-	ObjectPlacementCursor = myTree
-	call_deferred("add_child",ObjectPlacementCursor)
+		placement_cursor.hide()
 
 func _process(delta: float):
 	if Home.BrushSize != size[0]:
@@ -53,16 +44,16 @@ func _process(delta: float):
 		return
 		
 	_position_cursor(mouse_pos)
-
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		mouse_left_held = true
-		_handle_deform(1)
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		if (BrushMode == BRUSH_MODE.Flatten):
-			BrushSetHeight = _find_nearest_vertex_on_terrain().y
-		else:
-			_handle_deform(-1)
-			mouse_right_held = true
+	if (BrushMode != BRUSH_MODE.Place):
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			mouse_left_held = true
+			_handle_deform(1)
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			if (BrushMode == BRUSH_MODE.Flatten):
+				BrushSetHeight = _find_nearest_vertex_on_terrain().y
+			else:
+				_handle_deform(-1)
+				mouse_right_held = true
 		
 func _position_cursor(mouse_pos: Vector2):
 
@@ -78,7 +69,8 @@ func _position_cursor(mouse_pos: Vector2):
 	if result:
 		if (result.get("collider").name == "Terrain_col"):
 			global_position = result.position
-			ObjectPlacementCursor.global_position = result.position
+			if (placement_cursor):
+				placement_cursor.global_position = result.position
 		
 func _find_nearest_vertex_on_terrain():
 	var mdt = MeshDataTool.new()

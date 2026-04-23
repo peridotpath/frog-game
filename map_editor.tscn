@@ -67,6 +67,8 @@ PlacerSelection = NodePath("UILayer/UIArea/PlacerSelection")
 BrushSelectionLabel = NodePath("UILayer/UIArea/BrushSelection")
 BrushDescriptionLabel = NodePath("UILayer/UIArea/BrushSelection/BrushDescription")
 
+[node name="PlacementCursor" parent="." unique_id=63894144 instance=ExtResource("19_nbdi8")]
+
 [node name="VertexCubes" type="Node3D" parent="." unique_id=368670937 node_paths=PackedStringArray("Terrain", "Cursor", "Main")]
 script = ExtResource("2_0tlqm")
 Terrain = NodePath("../Terrain")
@@ -84,10 +86,7 @@ script = ExtResource("5_e2fnq")
 material_override = SubResource("ShaderMaterial_bh6pa")
 script = ExtResource("1_vga7x")
 
-[node name="ObjectPlacementCursor" type="Node3D" parent="Terrain" unique_id=1466528152]
-transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
-
-[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "ObjectPlacementCursor", "ObjectToBePlaced")]
+[node name="TerrainCursor" type="MeshInstance3D" parent="Terrain" unique_id=1608092171 node_paths=PackedStringArray("Terrain", "Camera", "Home", "UIArea", "placement_cursor")]
 transform = Transform3D(1, 0, 0, 0, 0.9792865, 0.20247966, 0, -0.20247966, 0.9792865, 0, 1.084393, 0.7499663)
 cast_shadow = 0
 gi_lightmap_scale = 0
@@ -98,8 +97,7 @@ Terrain = NodePath("..")
 Camera = NodePath("../../Camera3d")
 Home = NodePath("../..")
 UIArea = NodePath("../../UILayer/UIArea")
-ObjectPlacementCursor = NodePath("Tree")
-ObjectToBePlaced = NodePath("../../Tree")
+placement_cursor = NodePath("../../PlacementCursor")
 size = Vector3(0, 0, 0)
 texture = ExtResource("6_e2fnq")
 modulate = Color(1, 1, 1, 0.44313726)
@@ -271,8 +269,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072906494, 0.28118896, 0.27
 shape = SubResource("BoxShape3D_6ykog")
 
 [node name="frog_2_model" parent="RigidBody3D2" unique_id=93551001 instance=ExtResource("15_86fvb")]
-
-[node name="Tree" parent="." unique_id=63894144 instance=ExtResource("19_nbdi8")]
 
 [connection signal="pressed" from="UILayer/UIExpand" to="." method="_on_ui_expand_pressed"]
 [connection signal="pressed" from="UILayer/UIArea/UIClose" to="." method="_on_ui_close_pressed"]
