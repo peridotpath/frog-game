@@ -1,53 +1,43 @@
-# This is a basic workflow to help you get started with Actions
+# SPDX-FileCopyrightText: 2023 Simon Dalvai <info@simondalvai.org>
 
-name: CI
+# SPDX-License-Identifier: CC0-1.0
+
+name: itch.io upload
+
+on:
+  push:
+    paths:
+      - "version"
+      - ".github/workflows/upload-itchio.yml"
+      - "export_presets.html.example"
 
 env:
-  GODOT_VERSION: 3.3.3
-  
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  WORKING_DIRECTORY: root
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  export-web:
-    name: Web Export
+  deploy:
+    if: github.ref == 'refs/heads/prod'
     runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:3.3.3
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Delete iOS icons
+        run: rm -rf $WORKING_DIRECTORY/AppIcons
+
+      - name: Create export directory
+        run: mkdir html5
+
+      - name: Create export_presets.cfg
+        run: cp game/export_presets.html.example game/export_presets.cfg
+
+      - name: Godot HTML5 export
+        uses: dulvui/godot-html-export@v1
         with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/templates
-          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-      - name: Web Build
-        run: |
-          mkdir -v -p build/web
-          godot -v --export "HTML5" ./build/web/index.html
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: web
-          path: build/web
-      # Installing rsync is needed in order to deploy to GitHub Pages. Without it, the build will fail.
-      - name: Install rsync 📚
-        run: |
-          apt-get update && apt-get install -y rsync
-      - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: main # The branch the action should deploy to.
-          FOLDER: build/web # The folder the action should deploy.
+          working-directory: ${{ env.WORKING_DIRECTORY }} 
+          godot-version: 3.6
+          create-export-preset-cfg: false
+
+
+
+
