@@ -56,6 +56,9 @@ font_size = 22
 [sub_resource type="LabelSettings" id="LabelSettings_hrci8"]
 font_size = 12
 
+[sub_resource type="LabelSettings" id="LabelSettings_cfb81"]
+font_size = 33
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_6ykog"]
 size = Vector3(4.1312866, 0.43762207, 3.3197021)
 
@@ -260,6 +263,14 @@ popup/item_0/text = "Tree"
 popup/item_0/id = 0
 popup/item_1/text = "Mushroom"
 popup/item_1/id = 1
+
+[node name="Label" type="Label" parent="UILayer" unique_id=703826097]
+offset_left = 1015.0
+offset_top = 588.0
+offset_right = 1122.0
+offset_bottom = 634.0
+text = "V 0.0.1"
+label_settings = SubResource("LabelSettings_cfb81")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=695263020]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.27026, 1.5116389, 0)
