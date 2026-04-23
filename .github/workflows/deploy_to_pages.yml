@@ -1,42 +1,45 @@
-# SPDX-FileCopyrightText: 2023 Simon Dalvai <info@simondalvai.org>
-
-# SPDX-License-Identifier: CC0-1.0
-
-name: itch.io upload
+name: Deploy Godot to GitHub Pages
 
 on:
   push:
-    paths:
-      - "version"
-      - "export_presets.html.example"
+    branches: [ "main" ]
 
-env:
-  WORKING_DIRECTORY: root
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  deploy:
-    if: github.ref == 'refs/heads/prod'
+  export:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Delete iOS icons
-        run: rm -rf $WORKING_DIRECTORY/AppIcons
-
-      - name: Create export directory
-        run: mkdir html5
-
-      - name: Create export_presets.cfg
-        run: cp game/export_presets.html.example game/export_presets.cfg
-
-      - name: Godot HTML5 export
-        uses: dulvui/godot-html-export@v1
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
         with:
-          working-directory: ${{ env.WORKING_DIRECTORY }} 
-          godot-version: 3.6
-          create-export-preset-cfg: false
+          version: 4.6
+          export-templates: true
 
+      - name: Export Web Build
+        run: |
+          mkdir -p build
+          godot --headless --export-release "Web" build/index.html
 
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
 
+  deploy:
+    needs: export
+    runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Deploy
+        uses: actions/deploy-pages@v4
