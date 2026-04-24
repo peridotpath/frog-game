@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Show export presets
+        run: cat export_presets.cfg
+
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
@@ -26,8 +29,9 @@ jobs:
 
       - name: Export Web Build
         run: |
+          rm -rf build
           mkdir -p build
-          godot --headless --export-release "Web" build/index.html
+          godot --headless --rendering-driver opengl3 --export-release "Web" build/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
