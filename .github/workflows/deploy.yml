@@ -26,12 +26,15 @@ jobs:
           version: 4.2.2
           include-templates: true
           use-dotnet: false
+      
+      - name: Clear templates cache
+        run: rm -rf ~/.local/share/godot/export_templates
 
       - name: Export Web Build
         run: |
           rm -rf build
           mkdir -p build
-          godot --headless --export-release "WebNoThreads" build/index.html
+          godot --headless --rendering-driver opengl3 --export-release "Web" build/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
