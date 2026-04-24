@@ -27,8 +27,13 @@ jobs:
           include-templates: true
           use-dotnet: false
       
-      - name: Clear templates cache
-        run: rm -rf ~/.local/share/godot/export_templates
+      - name: Install export templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.2.2.stable
+          wget https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_export_templates.tpz
+          unzip Godot_v4.2.2-stable_export_templates.tpz -d templates
+          mv templates/templates/* ~/.local/share/godot/export_templates/4.2.2.stable/      - name: Clear templates cache
+              run: rm -rf ~/.local/share/godot/export_templates
 
       - name: Export Web Build
         run: |
