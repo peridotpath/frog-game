@@ -34,7 +34,7 @@ jobs:
         run: |
           rm -rf build
           mkdir -p build
-          godot --headless --rendering-driver opengl3 --export-release "Web" build/index.html
+          godot --headless --rendering-driver opengl3 --export-release "WebNoThreads" build/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
