@@ -7,13 +7,10 @@ func _ready():
 	_generate_terrain()
 	
 func _get_index_from_coords(coords: Vector2):
-	print ("xy")
-	var scale = mesh_size.x / subdivides
-	var x_component = round(coords.x / scale) + subdivides / 2
-	var y_component = round(coords.y / scale) + subdivides / 2
-	print(x_component)
-	print(y_component)
-	return y_component + x_component * subdivides
+	var scale = mesh_size.x / (subdivides + 2)
+	var x_component = 501 - (floor(coords.x / scale) + (subdivides + 2) / 2) 
+	var y_component = 501 - (floor(coords.y / scale) + (subdivides + 2) / 2) 
+	return x_component + (y_component * (subdivides + 2))
 	
 func _find_vertices_in_circle(center: Vector2, size:float) -> int:
 	var middle_vertex = _get_index_from_coords(center)

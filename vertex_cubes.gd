@@ -8,7 +8,7 @@ var last_tick: int = 0
 
 func _process(delta: float):
 	last_tick += 1
-	if (last_tick > 10):
+	if (last_tick > 0):
 		last_tick = 0
 		_process_vertex_cubes()
 		
