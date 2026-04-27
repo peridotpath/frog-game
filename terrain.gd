@@ -1,10 +1,25 @@
 extends MeshInstance3D
 
-@export var subdivides : int = 50
-@export var mesh_size: Vector2 = Vector2(100.0, 100.0)
+@export var subdivides : int = 500
+@export var mesh_size: Vector2 = Vector2(1000.0, 1000.0)
 
 func _ready():
 	_generate_terrain()
+	
+func _get_index_from_coords(coords: Vector2):
+	print ("xy")
+	var scale = mesh_size.x / subdivides
+	var x_component = round(coords.x / scale) + subdivides / 2
+	var y_component = round(coords.y / scale) + subdivides / 2
+	print(x_component)
+	print(y_component)
+	return y_component + x_component * subdivides
+	
+func _find_vertices_in_circle(center: Vector2, size:float) -> int:
+	var middle_vertex = _get_index_from_coords(center)
+	print(middle_vertex)
+	return middle_vertex
+
 
 func _generate_terrain():
 
