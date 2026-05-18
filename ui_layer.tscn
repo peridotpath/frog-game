@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://bjs8li7fmx6hk"]
+
+[ext_resource type="Texture2D" uid="uid://c14ttk5krnhst" path="res://assets/ui_expand.png" id="1_rw734"]
+[ext_resource type="Texture2D" uid="uid://d4n4rkuceled4" path="res://assets/ui_exit.png" id="2_6q42j"]
+[ext_resource type="Texture2D" uid="uid://cgxta13tii0j8" path="res://assets/terrain_place_icon.png" id="3_e6xbt"]
+[ext_resource type="Texture2D" uid="uid://dq64nlj6fyi3j" path="res://assets/terrain_gaus_icon.png" id="4_5ocom"]
+[ext_resource type="Texture2D" uid="uid://duf4bkba71eyu" path="res://assets/terrain_cyl_icon.png" id="5_oymnt"]
+[ext_resource type="Texture2D" uid="uid://tgj7vn663cra" path="res://assets/terrain_smooth_icon.png" id="6_63dme"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dnihh"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_j6wux"]
+font_size = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_hrci8"]
+font_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_cfb81"]
+font_size = 33
+
+[node name="UILayer" type="CanvasLayer" unique_id=1043562610]
+
+[node name="UIExpand" type="TextureButton" parent="." unique_id=1781023435]
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 51.0
+offset_bottom = 48.0
+texture_normal = ExtResource("1_rw734")
+stretch_mode = 0
+
+[node name="UIArea" type="ColorRect" parent="." unique_id=587301498]
+offset_right = 247.0
+offset_bottom = 453.0
+mouse_force_pass_scroll_events = false
+color = Color(0.2079221, 0.24501562, 0.17417488, 1)
+
+[node name="UIClose" type="TextureButton" parent="UIArea" unique_id=460706805]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 51.0
+offset_bottom = 48.0
+texture_normal = ExtResource("2_6q42j")
+stretch_mode = 0
+
+[node name="PlaceButton" type="TextureButton" parent="UIArea" unique_id=439800936]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 148.0
+offset_right = 73.0
+offset_bottom = 212.0
+texture_normal = ExtResource("3_e6xbt")
+stretch_mode = 0
+
+[node name="GausButton" type="TextureButton" parent="UIArea" unique_id=1600674112]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 72.0
+offset_right = 71.0
+offset_bottom = 136.0
+texture_normal = ExtResource("4_5ocom")
+stretch_mode = 0
+
+[node name="CylButton" type="TextureButton" parent="UIArea" unique_id=6496610]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 72.0
+offset_right = 147.0
+offset_bottom = 136.0
+texture_normal = ExtResource("5_oymnt")
+stretch_mode = 0
+
+[node name="SmoothButton" type="TextureButton" parent="UIArea" unique_id=1450986801]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 72.0
+offset_right = 224.0
+offset_bottom = 136.0
+texture_normal = ExtResource("6_63dme")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="UIArea" unique_id=1000238955]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 4.0
+offset_right = 312.0
+offset_bottom = 53.0
+text = "MENU"
+label_settings = SubResource("LabelSettings_dnihh")
+
+[node name="ColorRect" type="ColorRect" parent="UIArea" unique_id=653905963]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 55.0
+offset_right = 209.0
+offset_bottom = 61.0
+
+[node name="BrushSelection" type="Label" parent="UIArea" unique_id=1264592879]
+visible = false
+layout_mode = 0
+offset_left = 14.0
+offset_top = 237.0
+offset_right = 203.0
+offset_bottom = 268.0
+text = "GAUSSIAN BRUSH"
+label_settings = SubResource("LabelSettings_j6wux")
+
+[node name="BrushDescription" type="Label" parent="UIArea/BrushSelection" unique_id=1051984979]
+layout_mode = 0
+offset_left = -9.0
+offset_top = 119.0
+offset_right = 210.0
+offset_bottom = 199.0
+text = "Click and hold the left mouse to raise and right mouse to lower terrain."
+label_settings = SubResource("LabelSettings_hrci8")
+autowrap_mode = 2
+
+[node name="SizeSlider" type="HSlider" parent="UIArea/BrushSelection" unique_id=899962511]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 44.0
+offset_right = 189.0
+offset_bottom = 66.0
+
+[node name="Label" type="Label" parent="UIArea/BrushSelection/SizeSlider" unique_id=901433836]
+layout_mode = 0
+offset_left = -49.0
+offset_top = -2.0
+offset_right = -17.0
+offset_bottom = 21.0
+text = "SIZE"
+
+[node name="StrSlider" type="HSlider" parent="UIArea/BrushSelection" unique_id=2144985521]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 69.0
+offset_right = 190.0
+offset_bottom = 91.0
+
+[node name="Label" type="Label" parent="UIArea/BrushSelection/StrSlider" unique_id=1322228498]
+layout_mode = 0
+offset_left = -44.0
+offset_top = -2.0
+offset_right = -15.0
+offset_bottom = 21.0
+text = "STR"
+
+[node name="PlacerSelection" type="Label" parent="UIArea" unique_id=1495004143]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 230.0
+offset_right = 125.0
+offset_bottom = 253.0
+text = "PLACE OBJECT"
+
+[node name="PlacementItemOptions" type="OptionButton" parent="UIArea/PlacerSelection" unique_id=514221174]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 31.0
+offset_right = 141.0
+offset_bottom = 62.0
+item_count = 2
+popup/item_0/text = "Tree"
+popup/item_0/id = 0
+popup/item_1/text = "Mushroom"
+popup/item_1/id = 1
+
+[node name="Label" type="Label" parent="." unique_id=319381674]
+offset_left = 1015.0
+offset_top = 588.0
+offset_right = 1122.0
+offset_bottom = 634.0
+text = "V 0.0.1"
+label_settings = SubResource("LabelSettings_cfb81")
